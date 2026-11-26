@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>NAS100USD · OANDA</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body class="bg-slate-950 text-slate-200 antialiased">
+    <div class="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.14),transparent_65%)]"></div>
+
+    <main class="mx-auto max-w-screen-2xl px-5 py-8">
+      <header class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-semibold tracking-tight text-white">NAS100USD · OANDA</h1>
+          <p class="mt-1 text-sm text-slate-400">US Nas 100 with EMA 50, 150 and 200 and swing highs and lows</p>
+        </div>
+
+        <p class="flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
+          <span class="relative flex size-2">
+            <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-emerald-400"></span>
+          </span>
+          Live from TradingView
+        </p>
+      </header>
+
+      <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <figure class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 shadow-xl shadow-black/40 ring-1 ring-inset ring-white/5">
+          <figcaption class="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+            <span class="text-sm font-medium text-slate-200">1 hour</span>
+            <span class="rounded-md bg-sky-400/10 px-2 py-0.5 text-xs font-semibold tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/20">1H</span>
+          </figcaption>
+          <div id="chart-1h" class="h-[42vh]"></div>
+        </figure>
+
+        <figure class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 shadow-xl shadow-black/40 ring-1 ring-inset ring-white/5">
+          <figcaption class="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+            <span class="text-sm font-medium text-slate-200">4 hours</span>
+            <span class="rounded-md bg-sky-400/10 px-2 py-0.5 text-xs font-semibold tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/20">4H</span>
+          </figcaption>
+          <div id="chart-4h" class="h-[42vh]"></div>
+        </figure>
+      </div>
+
+      <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <figure class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 shadow-xl shadow-black/40 ring-1 ring-inset ring-white/5">
+          <figcaption class="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+            <span class="text-sm font-medium text-slate-200">Daily</span>
+            <span class="rounded-md bg-sky-400/10 px-2 py-0.5 text-xs font-semibold tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/20">1D</span>
+          </figcaption>
+          <div id="chart-daily" class="h-[42vh]"></div>
+        </figure>
+
+        <figure class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 shadow-xl shadow-black/40 ring-1 ring-inset ring-white/5">
+          <figcaption class="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+            <span class="text-sm font-medium text-slate-200">Weekly</span>
+            <span class="rounded-md bg-sky-400/10 px-2 py-0.5 text-xs font-semibold tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/20">1W</span>
+          </figcaption>
+          <div id="chart-weekly" class="h-[42vh]"></div>
+        </figure>
+      </div>
+
+      <div class="mt-4">
+        <figure class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 shadow-xl shadow-black/40 ring-1 ring-inset ring-white/5">
+          <figcaption class="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+            <span class="text-sm font-medium text-slate-200">Monthly</span>
+            <span class="rounded-md bg-sky-400/10 px-2 py-0.5 text-xs font-semibold tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/20">1M</span>
+          </figcaption>
+          <div id="chart-monthly" class="h-[42vh]"></div>
+        </figure>
+      </div>
+    </main>
+
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+      function showChart(containerId, interval) {
+        new TradingView.widget({
+          container_id: containerId,
+          autosize: true,
+          symbol: "OANDA:NAS100USD",
+          interval: interval,
+          timezone: "Europe/Stockholm",
+          theme: "dark",
+          style: "1",
+          locale: "en",
+          hide_side_toolbar: true,
+          hide_top_toolbar: true,
+          hide_legend: true,
+          hide_volume: true,
+          allow_symbol_change: false,
+          studies: [
+            { id: "MAExp@tv-basicstudies", inputs: { length: 50 } },
+            { id: "MAExp@tv-basicstudies", inputs: { length: 150 } },
+            { id: "MAExp@tv-basicstudies", inputs: { length: 200 } },
+            { id: "PivotPointsHighLow@tv-basicstudies", inputs: { in_0: 5, in_1: 10, in_2: 5, in_3: 10 } },
+          ],
+        })
+      }
+
+      showChart("chart-1h", "60")
+      showChart("chart-4h", "240")
+      showChart("chart-daily", "D")
+      showChart("chart-weekly", "W")
+      showChart("chart-monthly", "M")
+    </script>
+  </body>
+</html>
